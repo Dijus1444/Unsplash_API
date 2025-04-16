@@ -1,16 +1,20 @@
-const url =
-  "https://api.unsplash.com/photos/random?client_id=JA64Clx91B9c55lZlEwa782nZ9XQXKOrCleEwym5FU0&count=4";
+const Key = "JA64Clx91B9c55lZlEwa782nZ9XQXKOrCleEwym5FU0";
 
-fetchRandomPhoto = async () => {
+async function fetchImages() {
+  const query = document.getElementById("searchInput").value;
+  const url = `https://api.unsplash.com/search/photos?query=${query}&client_id=${Key}&per_page=4`;
+
   const response = await fetch(url);
-
   const data = await response.json();
 
-  data.forEach((photo) => {
+  const container = document.getElementById("imageContainer");
+  container.innerHTML = "";
+
+  data.results.forEach((photo) => {
     const img = document.createElement("img");
     img.src = photo.urls.regular;
-    console.log(data);
-    document.body.appendChild(img);
+    img.alt = photo.alt_description || query;
+    img.classList.add("image");
+    container.appendChild(img);
   });
-};
-fetchRandomPhoto();
+}
